@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: test-django
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: test-django
+  template:
+    metadata:
+      labels:
+        app: test-django
+    spec:
+      containers:
+        - name: test-django
+          image: docker.io/library/test-django-app:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 88
+          env:
+            - name: SECRET_KEY
+              value: "123456pofig"
+            - name: DEBUG
+              value: "True"
+            - name: ALLOWED_HOSTS
+              value: "localhost,127.0.0.1"
+            - name: DATABASE_URL
+              value: "postgresql://guest:guest@192.168.8.229:5432/test_k8s"
