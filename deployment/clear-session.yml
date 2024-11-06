@@ -3,9 +3,11 @@ kind: CronJob
 metadata:
   name: django-clearsessions
 spec:
-  schedule: "40 * * * *" # This will run the job daily at midnight (adjust as needed)
+  schedule: "40 * * * *"
+  startingDeadlineSeconds: 300
   jobTemplate:
     spec:
+      ttlSecondsAfterFinished: 360
       template:
         spec:
           containers:
