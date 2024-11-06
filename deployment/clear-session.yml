@@ -1,0 +1,23 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: django-clearsessions
+spec:
+  schedule: "40 * * * *" # This will run the job daily at midnight (adjust as needed)
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: django-clear-sessions
+            image: docker.io/library/test-django-app:latest
+            imagePullPolicy: IfNotPresent
+            command:
+            - python
+            - manage.py
+            - clearsessions
+            env:
+            envFrom:
+              - secretRef:
+                  name: test-django-app-secret
+          restartPolicy: Never
